@@ -1136,10 +1136,10 @@
   .grain {
     animation: none !important;
   }
+
+  /* the film becomes a still storyboard: stacked, readable frames */
   .hero__bg,
   .dolly__rows,
-  .dolly__cluster,
-  .press__photo,
   .ferm__tanks-img,
   .ferm__barrels-img,
   .estate__bg-img,
@@ -1147,30 +1147,75 @@
     transform: none !important;
     filter: none !important;
   }
-  .dolly__cluster {
-    clip-path: none !important;
+  .hero__exit,
+  .press__ring,
+  .dolly__veil,
+  .press__veil,
+  .dolly__cluster,
+  .ferm__barrels {
+    display: none !important;
+  }
+
+  .dolly__rows {
+    position: relative;
+    height: 54vh;
   }
   .dolly__hands {
-    transform: none !important;
     position: relative;
+    transform: none !important;
     height: 46vh;
   }
-  .ferm__barrels {
-    opacity: 1 !important;
+  .dolly__beats {
+    display: none;
+  }
+
+  .press__juice {
+    display: none;
+  }
+  .press__photo {
     position: relative;
-    height: 50vh;
-    inset: auto;
+    height: 100%;
   }
-  .press__veil,
-  .dolly__veil {
-    opacity: 0 !important;
+  .press__beats,
+  .ferm__beats {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+    padding-bottom: 9vh;
   }
+  .ferm__beat,
   .ferm__stats,
+  .ferm__quote {
+    grid-area: auto;
+  }
+  .ferm__stats {
+    flex-direction: row;
+    opacity: 1 !important;
+  }
   .ferm__quote {
     opacity: 1 !important;
   }
-  .hero__exit,
-  .press__ring {
-    display: none;
+  .ferm__quote blockquote {
+    font-size: clamp(1.2rem, 3vw, 1.9rem);
+  }
+
+  .pour__caption {
+    opacity: 1 !important;
+  }
+  .final__rule {
+    transform: scaleX(1);
+  }
+
+  /* pinned scenes stay pinned (no scrub timelines were created) but
+     their text must not be trapped behind masks */
+  .hero__title .line,
+  .dolly__beat .line,
+  .press__beat .line,
+  .ferm__beat .line,
+  .bottle__name .line,
+  .pour__t .line {
+    transform: none !important;
   }
 }
