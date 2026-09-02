@@ -12,6 +12,9 @@ const CRITICAL = [
   '/images/grapes-macro.webp',
   '/images/cellar-tanks.webp',
   '/images/cellar-barrels.webp',
+  // first frame of each scroll-film, so the films open instantly
+  '/sequences/bottle/frame-001.jpg',
+  '/sequences/pouring/frame-001.jpg',
 ]
 
 /**

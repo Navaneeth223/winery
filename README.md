@@ -28,8 +28,8 @@ npm run preview    # serve the production build
 | `PressScene`           | 04 · The Press          | Grape fills the frame; a ring of light "passes through the skin" into a living canvas of juice that darkens and calms |
 | `FermentationScene`    | 05 · The Cellar         | Rack focus out of darkness; fermentation numbers count themselves; barrels; the winemaker's creed |
 | `CraftScene`           | 06 · The Craft          | Editorial spread with sticky creed and drifting photographs |
-| `BottleRevealScene`    | 07 · The Bottle         | The estate bottle rises into a beam of light; story arrives in passes; real add-to-cart |
-| `PourScene`            | 08 · The Pour           | Scroll-driven liquid: the bottle tilts, the stream falls, the glass fills |
+| `BottleRevealScene`    | 07 · The Bottle         | The estate bottle as a 250-frame film scrubbed by scroll; story arrives in passes; real add-to-cart |
+| `PourScene`            | 08 · The Pour           | A 300-frame cinematic pour, frame-by-frame with the scroll |
 | `CollectionScene`      | 09 · The Collection     | Daylight. The shop: six wines, filters, quick add, wishlist |
 | `TableScene`           | 10 · The Table          | Asymmetric editorial gallery with parallax |
 | `EstateScene`          | 11 · The Estate         | Aerial pan; experiences; visit request form |
@@ -44,8 +44,9 @@ src/
   lib/        gsap setup, lenis smooth-scroll integration
   hooks/      usePrefersReducedMotion, useInView
   components/
-    graphics/ BottleGraphic (ONE bottle everywhere), GrapeMark/Wordmark
-    canvas/   JuiceCanvas, PourCanvas, DustCanvas (visibility-gated)
+    graphics/ BottleGraphic (ONE bottle everywhere: cards, cart, detail)
+    canvas/   ImageSequence (scroll-scrubbed film), JuiceCanvas,
+              DustCanvas (visibility-gated)
     chrome:   Preloader, Navbar, Chrome (rails/grain), CartDrawer,
               ProductDetail, Toast, Footer
   scenes/     one component per chapter — each owns its scroll timeline
@@ -74,3 +75,20 @@ src/
 Everything identity-related lives in `src/data/brand.ts` and
 `src/data/wines.ts` — name, region, story, the six wines with their tones.
 The bottle, the palette and the type remain consistent automatically.
+
+## Scroll films (image sequences)
+
+Chapters 07 and 08 play real frame sequences, scrubbed by the scroll:
+
+```
+public/sequences/bottle/    frame-001.jpg … frame-250.jpg   (CH. 07)
+public/sequences/pouring/   frame-001.jpg … frame-300.jpg   (CH. 08)
+```
+
+- Frames preload in playback order (10-at-a-time pool, ~10 MB total) and
+  the player always draws the newest contiguous ready frame — early
+  scrolling degrades gracefully instead of stuttering.
+- Only repaints when the frame index changes; renders only while visible.
+- `prefers-reduced-motion` shows a single deliberate still.
+- To swap or extend a film: replace frames in the folder (zero-padded,
+  sortable names) and run `npm run sequences` to regenerate the manifest.

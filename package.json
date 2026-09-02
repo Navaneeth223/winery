@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "sequences": "node scripts/generate-sequences.mjs",
     "assets:search": "node scripts/fetch-assets.mjs search",
     "assets:download": "node scripts/fetch-assets.mjs download"
   },
