@@ -36,6 +36,13 @@ export default function App() {
     initSmooth(reduced)
   }, [reduced])
 
+  // warm the two scroll-films immediately (550 frames ≈ 10 MB,
+  // ordered pool — scenes degrade gracefully while loading)
+  useEffect(() => {
+    preloadSequence('bottle', bottleSequence)
+    preloadSequence('pouring', pourSequence)
+  }, [])
+
   // chapter slate — one ScrollTrigger per scene, created after pinning
   useEffect(() => {
     if (!ready) return
