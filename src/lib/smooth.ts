@@ -29,10 +29,8 @@ export function scrollToTarget(selector: string) {
 }
 
 export function lockScroll(lock: boolean) {
-  if (!lenis) {
-    document.documentElement.style.overflow = lock ? 'hidden' : ''
-    return
-  }
+  document.documentElement.style.overflow = lock ? 'hidden' : ''
+  if (!lenis) return
   if (lock) lenis.stop()
   else lenis.start()
 }

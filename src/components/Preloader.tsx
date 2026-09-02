@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from '../lib/gsap'
+import { lockScroll } from '../lib/smooth'
 import { useUI } from '../store/store'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { GrapeMark } from './graphics/GrapeMark'
@@ -24,6 +25,7 @@ export function Preloader() {
   const rootRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    lockScroll(true)
     let loaded = 0
     let finished = false
     const start = performance.now()
@@ -34,6 +36,7 @@ export function Preloader() {
       setPct(100)
       const el = rootRef.current
       if (reduced || !el) {
+        lockScroll(false)
         setReady(true)
         return
       }
@@ -41,6 +44,7 @@ export function Preloader() {
         .timeline({ onComplete: () => setReady(true) })
         .to(el.querySelector('.preloader__inner'), { yPercent: -14, opacity: 0, duration: 0.6, ease: 'power2.in' }, 0.15)
         .to(el, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.1, ease: 'power4.inOut' }, 0.45)
+        .add(() => lockScroll(false))
     }
 
     const check = () => {
@@ -64,6 +68,7 @@ export function Preloader() {
     return () => {
       clearTimeout(minTimer)
       clearTimeout(failsafe)
+      lockScroll(false)
     }
   }, [reduced, setReady])
 
