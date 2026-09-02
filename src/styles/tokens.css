@@ -1,0 +1,67 @@
+/* ============================================================
+   ORÉE — design tokens
+   One system. Every section draws from it.
+   ============================================================ */
+
+:root {
+  /* — color: the cellar is dark; commerce arrives with daylight — */
+  --ink:         #14100c;
+  --char:        #1e1712;
+  --umber:       #241a13;
+  --wine:        #5a1e2e;
+  --wine-deep:   #3a1320;
+  --liquid:      #4a1030;
+  --grape:       #472b52;
+  --earth:       #4a382a;
+  --olive:       #6e6b4e;
+  --cream:       #f3ece0;
+  --bone:        #e8dfcf;
+  --stone:       #a79c8b;
+  --faint:       #8b8072;
+  --gold:        #c8a15a;
+
+  --line-dark:   rgba(243, 236, 224, 0.14);  /* hairlines on dark */
+  --line-light:  rgba(20, 16, 12, 0.14);      /* hairlines on light */
+
+  /* — typography — */
+  --font-display: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  --font-sans: 'Manrope', 'Helvetica Neue', system-ui, sans-serif;
+
+  --text-eyebrow: 0.6875rem;   /* 11px tracked caps */
+  --text-body: 1rem;
+  --text-copy: 1.0625rem;
+  --text-h3: clamp(1.5rem, 2.6vw, 2.25rem);
+  --text-h2: clamp(2.4rem, 5vw, 4.5rem);
+  --text-h1: clamp(3.2rem, 10vw, 9.5rem);
+
+  /* — rhythm — */
+  --gutter: clamp(1.25rem, 5vw, 6rem);
+  --section-y: clamp(6rem, 16vh, 12rem);
+  --maxw: 100rem;
+
+  /* — motion: deliberate, expensive — */
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-io: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --d-fast: 0.35s;
+  --d-med: 0.8s;
+  --d-slow: 1.4s;
+
+  /* — z — */
+  --z-nav: 60;
+  --z-drawer: 80;
+  --z-modal: 90;
+  --z-loader: 100;
+  --z-grain: 70;
+}
+
+/* light-theme context (commerce sections) */
+.theme-light {
+  --line: var(--line-light);
+  background: var(--cream);
+  color: var(--ink);
+}
+.theme-dark {
+  --line: var(--line-dark);
+  background: var(--ink);
+  color: var(--cream);
+}

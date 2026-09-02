@@ -1,0 +1,305 @@
+/* ============================================================
+   ORÉE — base
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* lenis drives */
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: var(--cream);
+  background: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--wine);
+  color: var(--cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ————————————————— typography helpers ————————————————— */
+
+.serif {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: 0.005em;
+}
+
+.eyebrow {
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.eyebrow--gold {
+  color: var(--gold);
+}
+
+.copy {
+  max-width: 34rem;
+  color: var(--stone);
+  font-size: var(--text-copy);
+  line-height: 1.75;
+  font-weight: 400;
+}
+
+.hairline {
+  height: 1px;
+  background: var(--line-dark);
+  border: 0;
+}
+.theme-light .hairline {
+  background: var(--line-light);
+}
+
+/* line-masked text reveal (JS translates the inner span) */
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+.line-mask > .line {
+  display: block;
+  will-change: transform;
+}
+
+/* ————————————————— buttons ————————————————— */
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--e-out);
+  z-index: 0;
+}
+.btn > * {
+  position: relative;
+  z-index: 1;
+}
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: scaleX(1);
+}
+.btn:hover,
+.btn:focus-visible {
+  color: var(--ink);
+}
+
+.btn--solid {
+  background: var(--wine);
+  border-color: var(--wine);
+  color: var(--cream);
+}
+.btn--solid::before {
+  background: var(--cream);
+}
+
+.btn--small {
+  padding: 0.7rem 1.35rem;
+  font-size: 0.625rem;
+}
+
+.theme-light .btn {
+  border-color: var(--line-light);
+}
+.theme-light .btn::before {
+  background: var(--ink);
+}
+.theme-light .btn:hover,
+.theme-light .btn:focus-visible {
+  color: var(--cream);
+}
+
+/* text link with animated underline */
+.tlink {
+  position: relative;
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  padding-bottom: 0.35rem;
+}
+.tlink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.3);
+  transform-origin: left;
+  opacity: 0.4;
+  transition: transform 0.5s var(--e-out), opacity 0.5s var(--e-out);
+}
+.tlink:hover::after,
+.tlink:focus-visible::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* ————————————————— layout ————————————————— */
+
+.container {
+  width: min(var(--maxw), 100% - var(--gutter) * 2);
+  margin-inline: auto;
+}
+
+.scene {
+  position: relative;
+  overflow: clip;
+}
+
+.pinned {
+  height: 100vh;
+  height: 100svh;
+}
+
+/* photographic grade — every photo passes through the same lens */
+.ph {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.88) contrast(1.04) sepia(0.08) brightness(0.96);
+}
+
+.ph-stage {
+  position: absolute;
+  inset: 0;
+}
+
+/* vignette + warm grade overlay on photography */
+.grade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10, 7, 5, 0.55) 100%),
+    linear-gradient(rgba(30, 16, 10, 0.12), rgba(30, 16, 10, 0.12));
+  pointer-events: none;
+}
+
+/* ————————————————— misc ————————————————— */
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 200;
+  background: var(--cream);
+  color: var(--ink);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* film grain */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.9s steps(4) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1.5%, 1%); }
+  50% { transform: translate(1%, -1.5%); }
+  75% { transform: translate(-1%, -1%); }
+  100% { transform: translate(1.5%, 1%); }
+}
+
+/* scroll progress — the film timeline */
+.progress-rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: calc(var(--z-nav) + 1);
+  pointer-events: none;
+}
+.progress-rail__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--wine), var(--gold));
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+}
+

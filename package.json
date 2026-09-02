@@ -1,0 +1,28 @@
+{
+  "name": "oree-winery",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "ORÉE — a cinematic winery experience. From the fruit of the earth to the wine in your glass.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "assets:search": "node scripts/fetch-assets.mjs search",
+    "assets:download": "node scripts/fetch-assets.mjs download"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.10",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8"
+  }
+}
