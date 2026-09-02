@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react'
 import { gsap } from '../lib/gsap'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { DustCanvas } from '../components/canvas/DustCanvas'
-import { BottleGraphic } from '../components/graphics/BottleGraphic'
+import { ImageSequence } from '../components/canvas/ImageSequence'
+import { bottleSequence } from '../data/sequences'
 import { wines, currency } from '../data/wines'
 import { useCart, useUI } from '../store/store'
 
@@ -10,12 +11,13 @@ const HERO_WINE = wines.find((w) => w.id === 'nuit-oree') ?? wines[0]
 
 /**
  * CH. 06 — THE BOTTLE
- * The dark stage. One bottle rises into a single beam of light,
- * its story arriving in passes — never all at once.
+ * The estate bottle as a 250-frame film, scrubbed by the scroll.
+ * The story arrives in passes around it — never all at once.
  */
 export function BottleRevealScene() {
   const rootRef = useRef<HTMLElement | null>(null)
   const reduced = usePrefersReducedMotion()
+  const filmProgress = useRef(0)
   const add = useCart((s) => s.add)
   const showToast = useUI((s) => s.showToast)
   const openCart = useUI((s) => s.openCart)
@@ -27,21 +29,22 @@ export function BottleRevealScene() {
         scrollTrigger: {
           trigger: rootRef.current,
           start: 'top top',
-          end: '+=320%',
+          end: '+=340%',
           scrub: 1,
           pin: true,
           anticipatePin: 1,
+          onUpdate: (self) => {
+            filmProgress.current = self.progress
+          },
         },
       })
 
-      tl.fromTo('.bottle__wine', { opacity: 0, yPercent: 22, rotate: -7 }, { opacity: 1, yPercent: 0, rotate: 0, ease: 'power1.out', duration: 0.3 }, 0.04)
-        .fromTo('.bottle__name .line', { yPercent: 130 }, { yPercent: 0, duration: 0.1, ease: 'power3.out' }, 0.1)
-        .fromTo('.bottle__sweep', { xPercent: -160 }, { xPercent: 260, ease: 'power1.inOut', duration: 0.24 }, 0.3)
-        .fromTo('.bottle__spec', { opacity: 0 }, { opacity: 1, duration: 0.12 }, 0.28)
-        .fromTo('.bottle__left', { opacity: 0, x: -44 }, { opacity: 1, x: 0, duration: 0.12, ease: 'power2.out' }, 0.38)
-        .fromTo('.bottle__right', { opacity: 0, x: 44 }, { opacity: 1, x: 0, duration: 0.12, ease: 'power2.out' }, 0.46)
-        .fromTo('.bottle__buy', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power2.out' }, 0.54)
-        .to({}, { duration: 0.2 })
+      tl.fromTo('.bottle__film-stage', { opacity: 0, scale: 1.07 }, { opacity: 1, scale: 1, duration: 0.12, ease: 'power2.out' }, 0.02)
+        .fromTo('.bottle__name .line', { yPercent: 130 }, { yPercent: 0, duration: 0.1, ease: 'power3.out' }, 0.12)
+        .fromTo('.bottle__left', { opacity: 0, x: -44 }, { opacity: 1, x: 0, duration: 0.12, ease: 'power2.out' }, 0.42)
+        .fromTo('.bottle__right', { opacity: 0, x: 44 }, { opacity: 1, x: 0, duration: 0.12, ease: 'power2.out' }, 0.52)
+        .fromTo('.bottle__buy', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power2.out' }, 0.64)
+        .to({}, { duration: 0.16 })
     }, rootRef)
     return () => ctx.revert()
   }, [reduced])
@@ -54,8 +57,17 @@ export function BottleRevealScene() {
 
   return (
     <section className="scene bottle pinned" ref={rootRef} data-chapter="07 · The Bottle" aria-label="The hero bottle revealed">
-      <div className="bottle__spotlight" aria-hidden="true" />
-      <DustCanvas className="bottle__dust" density={26} />
+      <ImageSequence
+        id="bottle"
+        frames={bottleSequence}
+        progressRef={filmProgress}
+        className="bottle__film-stage film-stage"
+        fit="cover"
+        background="#0e0a08"
+        staticFrame={214}
+      />
+      <div className="film-vignette" aria-hidden="true" />
+      <DustCanvas className="bottle__dust" density={18} />
 
       <div className="bottle__stage">
         <h2 className="bottle__name serif" aria-label={`${HERO_WINE.name} ${HERO_WINE.vintage}`}>
@@ -64,13 +76,7 @@ export function BottleRevealScene() {
           </span></span>
         </h2>
 
-        <div className="bottle__wine-wrap">
-          <BottleGraphic tone={HERO_WINE.tone} className="bottle__wine" title={HERO_WINE.name} />
-          <span className="bottle__sweep" aria-hidden="true" />
-          <span className="bottle__floor" aria-hidden="true" />
-        </div>
-
-        <div className="bottle__left" aria-hidden="false">
+        <div className="bottle__left">
           <p className="eyebrow eyebrow--gold">Tasting</p>
           <ul className="bottle__notes">
             {HERO_WINE.notes.map((n) => (

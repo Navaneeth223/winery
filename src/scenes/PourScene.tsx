@@ -1,17 +1,18 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from '../lib/gsap'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
-import { PourCanvas } from '../components/canvas/PourCanvas'
+import { ImageSequence } from '../components/canvas/ImageSequence'
+import { pourSequence } from '../data/sequences'
 
 /**
  * CH. 07 — THE POUR
- * The bottle tilts, the stream falls, the glass fills with your
- * scrolling — then the glass pushes us into daylight and commerce.
+ * A 300-frame cinematic pour, scrubbed frame-by-frame with the
+ * scroll — then the glass pushes us into daylight and commerce.
  */
 export function PourScene() {
   const rootRef = useRef<HTMLElement | null>(null)
   const reduced = usePrefersReducedMotion()
-  const pourProgress = useRef(0)
+  const filmProgress = useRef(0)
 
   useEffect(() => {
     if (reduced) return
@@ -20,22 +21,22 @@ export function PourScene() {
         scrollTrigger: {
           trigger: rootRef.current,
           start: 'top top',
-          end: '+=280%',
+          end: '+=300%',
           scrub: 1,
           pin: true,
           anticipatePin: 1,
           onUpdate: (self) => {
-            pourProgress.current = self.progress
+            filmProgress.current = self.progress
           },
         },
       })
 
       tl.fromTo('.pour__t .line', { yPercent: 130 }, { yPercent: 0, duration: 0.08 }, 0.04)
-        .to('.pour__t .line', { yPercent: -130, duration: 0.06 }, 0.72)
-        .fromTo('.pour__caption', { opacity: 0 }, { opacity: 1, duration: 0.06 }, 0.3)
-        .to('.pour__caption', { opacity: 0, duration: 0.06 }, 0.78)
-        // the glass grows toward us and hands off to the collection
-        .to('.pour__canvas', { scale: 1.5, yPercent: 6, filter: 'blur(3px) brightness(1.3)', ease: 'power1.in', duration: 0.18 }, 0.8)
+        .to('.pour__t .line', { yPercent: -130, duration: 0.06 }, 0.7)
+        .fromTo('.pour__caption', { opacity: 0 }, { opacity: 1, duration: 0.06 }, 0.32)
+        .to('.pour__caption', { opacity: 0, duration: 0.06 }, 0.76)
+        // settle the film toward the daylight of the collection
+        .to('.pour__film-stage', { scale: 1.06, filter: 'brightness(1.05)', duration: 0.18, ease: 'power1.inOut' }, 0.8)
         .to({}, { duration: 0.02 })
     }, rootRef)
     return () => ctx.revert()
@@ -43,9 +44,16 @@ export function PourScene() {
 
   return (
     <section className="scene pour pinned" ref={rootRef} data-chapter="08 · The Pour" aria-label="Wine pouring into the glass">
-      <div className="pour__canvas-wrap">
-        <PourCanvas progressRef={pourProgress} className="pour__canvas" />
-      </div>
+      <ImageSequence
+        id="pouring"
+        frames={pourSequence}
+        progressRef={filmProgress}
+        className="pour__film-stage film-stage"
+        fit="cover"
+        background="#120a0c"
+        staticFrame={168}
+      />
+      <div className="film-vignette" aria-hidden="true" />
 
       <p className="pour__t">
         <span className="line-mask"><span className="line serif">Nineteen seconds. Every one of them earned.</span></span>

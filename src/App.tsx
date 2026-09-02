@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { ScrollTrigger } from './lib/gsap'
 import { initSmooth } from './lib/smooth'
+import { preloadSequence } from './lib/sequences'
+import { bottleSequence, pourSequence } from './data/sequences'
 import { useUI } from './store/store'
 import { usePrefersReducedMotion } from './hooks/usePrefersReducedMotion'
 
